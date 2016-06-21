@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<!-- This file is part of art4j. It is subject to the license terms in 
+	 the LICENSE file found in the top-level directory of this distribution.
+	 You may not use this file except in compliance with the License. -->
+ 
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.dfki.resc28</groupId>
+		<artifactId>art4j</artifactId>
+		<version>0.1</version>
+	</parent>
+
+	<groupId>de.dfki.resc28</groupId>
+	<artifactId>art4j-java</artifactId>
+	<version>0.1</version>
+	<name>art4j - Java</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.5.1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>1.9</version>
+					<configuration>
+						<outputDirectory>${basedir}</outputDirectory>
+						<thirdPartyFilename>THIRD-PARTY</thirdPartyFilename>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<sourceDirectory>${basedir}/src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.9</version>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

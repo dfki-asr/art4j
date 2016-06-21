@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<!-- This file is part of art4j. It is subject to the license terms in 
+	 the LICENSE file found in the top-level directory of this distribution.
+	 You may not use this file except in compliance with the License. -->
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.dfki.resc28</groupId>
+	<artifactId>art4j</artifactId>
+	<version>0.1</version>
+
+	<name>AR Tracking for Java</name>
+
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>java</module>
+		<module>native</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>native-maven-plugin</artifactId>
+			<version>1.0-alpha-8</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>native-maven-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
