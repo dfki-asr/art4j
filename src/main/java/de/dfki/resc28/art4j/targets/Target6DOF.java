@@ -17,10 +17,14 @@ public class Target6DOF extends Target3DOF
 		this.rotation = rotation;
 	}
 	
+	public Target6DOF() {
+		
+	}
+	
 	public double[] getRotation()
 	{
 		return this.rotation;
 	}
 	
-	private double[] rotation;
+	protected double[] rotation;
 }

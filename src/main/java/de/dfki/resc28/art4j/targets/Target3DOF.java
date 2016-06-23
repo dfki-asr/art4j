@@ -15,6 +15,10 @@ public class Target3DOF
 		this.location = location;
 	}
 	
+	public Target3DOF() {
+		
+	}
+	
 	public int getID()
 	{
 		return this.id;
@@ -30,7 +34,7 @@ public class Target3DOF
 		return this.location;
 	}
 	
-	private int id;
-	private double quality;
-	private double[] location;
+	protected int id;
+	protected double quality;
+	protected double[] location;
 }
