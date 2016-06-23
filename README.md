@@ -16,13 +16,36 @@ MacOSX | Linux
 Add a dependency to your project's `pom.xml` like this
 ```
 <dependency>
-	<groupId>de.dfki.resc28</groupId>
-	<artifactId>libart4j</artifactId>
-	<version>0.1</version>
-	<classifier>jar-with-dependencies</classifier>
+    <artifactId>art4j</artifactId>
+    <groupId>de.dfki.resc28</groupId>
+    <version>0.1</version>
+    <type>nar</type>
 </dependency>
 ```
-and keep your fingers crossed.
+and don't forget to set 
+```
+<build>
+...
+    <plugin>
+        <groupId>com.github.maven-nar</groupId>
+        <artifactId>nar-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <extensions>true</extensions>
+        <executions>
+            <execution>
+                <id>unpack-nar-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>nar-download</goal>
+                    <goal>nar-unpack</goal>
+                    <goal>nar-assembly</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+...
+</build>
+```
 
 ## Contributing
 Contributions are very welcome.
