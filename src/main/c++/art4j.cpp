@@ -33,6 +33,17 @@ void Java_de_dfki_resc28_art4j_DTrackSDK_initialise (JNIEnv *env, jobject obj)
     setHandle(env, obj, dt);
 }
 
+void Java_de_dfki_resc28_art4j_DTrackSDK_initialise__Ljava_lang_String_2II (JNIEnv *env, jobject obj, jstring serverHost, jint serverPort, jint dataPort)
+{
+    unsigned short sPort = serverPort;
+    unsigned short dPort = dataPort;
+    const char *sHost = env->GetStringUTFChars(serverHost, 0);
+    
+    DTrackSDK* dt = new DTrackSDK(sHost, sPort, dPort);
+    setHandle(env, obj, dt);
+    env->ReleaseStringUTFChars(serverHost, sHost);
+}
+
 jint Java_de_dfki_resc28_art4j_DTrackSDK_getDataPort(JNIEnv *env, jobject obj)
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);

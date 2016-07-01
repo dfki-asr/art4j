@@ -6,6 +6,8 @@
 
 package de.dfki.resc28.art4j;
 
+import java.net.InetAddress;
+
 import de.dfki.resc28.art4j.targets.Marker;
 import de.dfki.resc28.art4j.targets.Body;
 import de.dfki.resc28.art4j.nar.NarSystem;
@@ -21,7 +23,16 @@ public class DTrackSDK
 		
 		return inst;
 	}
-	
+
+	public static synchronized DTrackSDK getInstance(String serverHost, int serverPort, int dataPort)
+	{
+		if (inst == null)
+		{
+			inst = new DTrackSDK(serverHost, serverPort, dataPort);
+		}
+		
+		return inst;
+	}
 	
 	//================================================================================
     // Public Methods
@@ -71,6 +82,9 @@ public class DTrackSDK
 
 	private DTrackSDK() { initialise(); }
 	private native void initialise();
+	
+	private DTrackSDK(String serverHost, int serverPort, int dataPort) { initialise(serverHost, serverPort, dataPort); }
+	private native void initialise(String serverHost, int serverPort, int dataPort);
 	
 	//================================================================================
     // Private Members
