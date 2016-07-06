@@ -1,5 +1,5 @@
 # art4j
-art4j provides a JNI wrapper for the AR Tracking DTrackSDK.
+art4j provides a JNI wrapper for the [ART Controller](http://www.ar-tracking.com/products/tracking-systems/arttrack-system/art-controller/).
 
 ## Installation & Usage
 Place art4j into your local maven repository by typing 
