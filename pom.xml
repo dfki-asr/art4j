@@ -150,5 +150,38 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>Linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.maven-nar</groupId>
+                        <artifactId>nar-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <skip>false</skip>
+                            <cpp>
+                                 <name>g++</name>
+                                 <includePaths>
+                                     <includePath>${project.basedir}/src/main/c++/DTrackSDK_v2.4.1/include</includePath>
+                                 </includePaths>
+                                 <sourceDirectory>${project.basedir}/src/main/c++</sourceDirectory>
+
+                                 <options>
+                                     <option>-std=c++11</option>
+                                 </options>
+                            </cpp>
+
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
