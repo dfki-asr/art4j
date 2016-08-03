@@ -14,6 +14,35 @@ import de.dfki.resc28.art4j.nar.NarSystem;
 
 public class DTrackSDK
 {
+
+	public static final int SYS_DTRACK_UNKNOWN = 0; // unknown system
+        public static final int SYS_DTRACK = 1; // DTrack system
+        public static final int SYS_DTRACK_2 = 2; // DTrack2 system
+
+	public static final int ERR_NONE = 0; // no error
+	public static final int ERR_TIMEOUT = 1; //!< timeout occured
+	public static final int ERR_NET = 2; //!< network error
+	public static final int ERR_PARSE = 3; //!< error while parsing command
+
+        public static String errorToString(int error) {
+            switch (error) {
+                case DTrackSDK.ERR_NONE: return "no error";
+                case DTrackSDK.ERR_TIMEOUT: return "timeout occured";
+                case DTrackSDK.ERR_NET: return "network error";
+                case DTrackSDK.ERR_PARSE: return "error while parsing command";
+                default: return "unknown error code: " + error;
+            }
+        }
+
+        public static String systemTypeToString(int sysType) {
+            switch (sysType) {
+                case DTrackSDK.SYS_DTRACK_UNKNOWN: return "unknown system";
+                case DTrackSDK.SYS_DTRACK: return "DTrack system";
+                case DTrackSDK.SYS_DTRACK_2: return "DTrack2 system";
+                default: return "unknown system type: " + sysType;
+            }
+        }
+
 	public static synchronized DTrackSDK getInstance()
 	{
 		if (inst == null)
@@ -38,17 +67,27 @@ public class DTrackSDK
     // Public Methods
     //================================================================================
 
+        public native int getLastDataError();
+        public native int getLastServerError();
+        public native int getLastDTrackError();
+
+        public native String getLastDTrackErrorDescription();
+
+
 	public native int getDataPort();
 	public native boolean isLocalDataPortValid();
 	public native boolean isUDPValid();
 	public native boolean isCommandInterfaceValid();
 	public native boolean isTCPValid();
-	
-	
+
+        public native boolean sendCommand(final String command);
+
+        public native int getRemoteSystemType();
+
 	public native boolean receive();
 	public native boolean startMeasurement();
 	public native boolean stopMeasurement();
-	
+
 	public native int getFrameCounter();
 	public native double getTimeStamp();
 

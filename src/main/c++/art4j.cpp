@@ -44,6 +44,45 @@ void Java_de_dfki_resc28_art4j_DTrackSDK_initialise__Ljava_lang_String_2II (JNIE
     env->ReleaseStringUTFChars(serverHost, sHost);
 }
 
+jint Java_de_dfki_resc28_art4j_DTrackSDK_getLastDataError(JNIEnv *env, jobject obj)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    return (jint)dt->getLastDataError();
+
+}
+
+jint Java_de_dfki_resc28_art4j_DTrackSDK_getLastServerError(JNIEnv *env, jobject obj)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    return (jint)dt->getLastServerError();
+
+}
+
+jint Java_de_dfki_resc28_art4j_DTrackSDK_getLastDTrackError(JNIEnv *env, jobject obj)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    return (jint)dt->getLastDTrackError();
+}
+
+jstring Java_de_dfki_resc28_art4j_DTrackSDK_getLastDTrackErrorDescription (JNIEnv *env, jobject obj)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    return env->NewStringUTF(dt->getLastDTrackErrorDescription().c_str());
+}
+
+jint Java_de_dfki_resc28_art4j_DTrackSDK_getRemoteSystemType(JNIEnv *env, jobject obj)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    return (jint)dt->getRemoteSystemType();
+}
+
+jboolean Java_de_dfki_resc28_art4j_DTrackSDK_sendCommand(JNIEnv *env, jobject obj, jstring command)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    const char *commandStr = env->GetStringUTFChars(command, 0);
+    return (jboolean)dt->sendCommand(commandStr ? commandStr : "");
+}
+
 jint Java_de_dfki_resc28_art4j_DTrackSDK_getDataPort(JNIEnv *env, jobject obj)
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
@@ -77,8 +116,8 @@ jboolean Java_de_dfki_resc28_art4j_DTrackSDK_isTCPValid(JNIEnv *env, jobject obj
 jboolean Java_de_dfki_resc28_art4j_DTrackSDK_receive(JNIEnv *env, jobject obj)
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
-    dt->receive();
-    setHandle(env, obj, dt);
+//    dt->receive();
+//    setHandle(env, obj, dt);
     return (jboolean)dt->receive();
 }
 
