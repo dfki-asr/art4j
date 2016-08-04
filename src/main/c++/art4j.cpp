@@ -35,10 +35,12 @@ void Java_de_dfki_resc28_art4j_DTrackSDK_initialise (JNIEnv *env, jobject obj)
 
 void Java_de_dfki_resc28_art4j_DTrackSDK_initialise__Ljava_lang_String_2II (JNIEnv *env, jobject obj, jstring serverHost, jint serverPort, jint dataPort)
 {
-    unsigned short sPort = serverPort;
-    unsigned short dPort = dataPort;
+    unsigned short sPort = (unsigned short)serverPort;
+    unsigned short dPort = (unsigned short)dataPort;
     const char *sHost = env->GetStringUTFChars(serverHost, 0);
-    
+    if (!sHost)
+        return;
+
     DTrackSDK* dt = new DTrackSDK(sHost, sPort, dPort);
     setHandle(env, obj, dt);
     env->ReleaseStringUTFChars(serverHost, sHost);
@@ -80,16 +82,20 @@ jboolean Java_de_dfki_resc28_art4j_DTrackSDK_sendCommand(JNIEnv *env, jobject ob
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
     const char *commandStr = env->GetStringUTFChars(command, 0);
-    return (jboolean)dt->sendCommand(commandStr ? commandStr : "");
+    if (!commandStr)
+        return (jboolean)0;
+    return (jboolean)dt->sendCommand(commandStr);
 }
 
 jobject JNICALL Java_de_dfki_resc28_art4j_DTrackSDK_sendDTrack2Command(JNIEnv *env, jobject obj, jstring command)
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
     const char *commandStr = env->GetStringUTFChars(command, 0);
+    if (!commandStr)
+        return 0;
 
     std::string answer;
-    int result = dt->sendDTrack2Command(commandStr ? commandStr : "", &answer);
+    int result = dt->sendDTrack2Command(commandStr, &answer);
 
     jstring janswer = env->NewStringUTF(answer.c_str());
 
