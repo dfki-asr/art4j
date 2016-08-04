@@ -83,6 +83,23 @@ jboolean Java_de_dfki_resc28_art4j_DTrackSDK_sendCommand(JNIEnv *env, jobject ob
     return (jboolean)dt->sendCommand(commandStr ? commandStr : "");
 }
 
+jobject JNICALL Java_de_dfki_resc28_art4j_DTrackSDK_sendDTrack2Command(JNIEnv *env, jobject obj, jstring command)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+    const char *commandStr = env->GetStringUTFChars(command, 0);
+
+    std::string answer;
+    int result = dt->sendDTrack2Command(commandStr ? commandStr : "", &answer);
+
+    jstring janswer = env->NewStringUTF(answer.c_str());
+
+    jclass cls = env->FindClass("de/dfki/resc28/art4j/DTrackSDK$CommandResult");
+    jmethodID methodID = env->GetMethodID(cls, "<init>", "(ILjava/lang/String;)V");
+    jobject jresult = env->NewObject(cls, methodID, (jint)result, janswer);
+
+    return jresult;
+}
+
 jint Java_de_dfki_resc28_art4j_DTrackSDK_getDataPort(JNIEnv *env, jobject obj)
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);

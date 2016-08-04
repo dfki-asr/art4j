@@ -82,6 +82,53 @@ public class DTrackSDK
 
         public native boolean sendCommand(final String command);
 
+        public static class CommandResult {
+            public final int result;
+            public final String answer;
+
+            public CommandResult(final int result, final String answer) {
+                this.result = result;
+                this.answer = answer;
+            }
+
+            public boolean isOK() {
+                return this.result == 1;
+            }
+
+            public boolean isError() {
+                return this.result < 0 || this.result == 2;
+            }
+
+            public boolean isDTrackError() {
+                return this.result == 2;
+            }
+
+            public String toString() {
+                StringBuilder b = new StringBuilder("<Command Result ");
+                b.append("code ").append(this.result).append(" (");
+                switch (this.result) {
+                    case 0: b.append("specific answer"); break;
+                    case 1: b.append("dtrack2 ok"); break;
+                    case 2: b.append("dtrack2 error, use getLastDTrackError"); break;
+                    case -1: b.append("receive timeout"); break;
+                    case -2: b.append("wrong system type"); break;
+                    case -3: b.append("command too long"); break;
+                    case -9: b.append("brocken tcp connection"); break;
+                    case -10: b.append("tcp connection invalid"); break;
+                    case -11: b.append("send command failed"); break;
+                    default:
+                        if (this.result < 0)
+                            b.append("unknown error code");
+                        else
+                            b.append("unknown result code");
+                }
+                b.append("), answer \"").append(this.answer).append("\" >");
+                return b.toString();
+            }
+        }
+
+        public native CommandResult sendDTrack2Command(final String command);
+
         public native int getRemoteSystemType();
 
 	public native boolean receive();
