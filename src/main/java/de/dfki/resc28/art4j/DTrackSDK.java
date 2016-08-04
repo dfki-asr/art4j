@@ -131,6 +131,41 @@ public class DTrackSDK
 
         public native int getRemoteSystemType();
 
+        /**
+	 * 	\brief	Set DTrack2 parameter.
+	 *
+	 *	@param 	category  parameter category
+	 *	@param 	name      parameter name
+	 *	@param 	value     parameter value
+	 *	@return	success?  (if not, a DTrack error message is available)
+	 */
+        public native boolean setParam(final String category, final String name, final String value);
+
+        /**
+	 * 	\brief	Set DTrack2 parameter.
+	 *
+	 * 	@param  parameter   complete parameter string without starting "dtrack set "
+	 *	@return success?    (if not, a DTrack error message is available)
+	 */
+        public native boolean setParam(final String parameter);
+
+        /**
+	 * 	\brief	Get DTrack2 parameter.
+	 *
+	 *	@param 	category  parameter category
+	 *	@param 	name      parameter name
+	 *	@return	value?    (if null, a DTrack error message is available)
+	 */
+	public native String getParam(final String category, final String name);
+
+        /**
+	 * 	\brief	Get DTrack2 parameter.
+	 *
+	 *	@param  parameter complete parameter string without starting "dtrack get "
+	 *	@return	value?    (if null, a DTrack error message is available)
+	 */
+        public native String getParam(final String parameter);
+
 	public native boolean receive();
 	public native boolean startMeasurement();
 	public native boolean stopMeasurement();
@@ -161,6 +196,51 @@ public class DTrackSDK
 //	
 //	getNumInertial()
 //	getInertial( )
+
+        /**
+         * Find first inactive channel
+         * @return channel number or -1 on error
+         */
+        public int findInactiveChannel(final int numChannels) {
+            return findInactiveChannel(1, numChannels);
+        }
+
+        /**
+         * Find first inactive channel starting with startChannel.
+         * @param startChannel
+         * @return positive inactive channel number, 0 if no channel found and -1 on error.
+         */
+        public int findInactiveChannel(final int startChannel, final int numChannels) {
+            int currentChannel = startChannel;
+            boolean channelFound = false;
+            while (true) {
+                if (numChannels > 0 && startChannel >= numChannels)
+                    return 0;
+                String chName = String.format("ch%02d", currentChannel);
+                String value = getParam("output net_active", chName);
+                if (value == null)
+                    return -1;
+                if ("no".equals(value))
+                    return currentChannel;
+                currentChannel += 1;
+            }
+        }
+
+        public boolean configureUDPChannel(int channel, String host, int port) {
+            return setParam("output net", String.format("ch%02d", channel), "udp "+host+" "+port);
+        }
+
+        public boolean configureMulticastChannel(int channel, String host, int port) {
+            return setParam("output net", String.format("ch%02d", channel), "multicast "+host+" "+port);
+        }
+
+        public boolean activateChannel(int channel, String outputType) {
+            return setParam("output active", String.format("ch%02d", channel), outputType+" yes");
+        }
+
+        public boolean deactivateChannel(int channel, String outputType) {
+            return setParam("output active", String.format("ch%02d", channel), outputType+" no");
+        }
 
 	//================================================================================
     // Private Methods

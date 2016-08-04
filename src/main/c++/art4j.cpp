@@ -106,6 +106,65 @@ jobject JNICALL Java_de_dfki_resc28_art4j_DTrackSDK_sendDTrack2Command(JNIEnv *e
     return jresult;
 }
 
+jboolean Java_de_dfki_resc28_art4j_DTrackSDK_setParam__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2(JNIEnv *env, jobject obj, jstring category, jstring name, jstring value)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+
+    const char *categoryStr = env->GetStringUTFChars(category, 0);
+    if (!categoryStr)
+        return (jboolean)0;
+    const char *nameStr = env->GetStringUTFChars(name, 0);
+    if (!nameStr)
+        return (jboolean)0;
+    const char *valueStr = env->GetStringUTFChars(value, 0);
+    if (!valueStr)
+        return (jboolean)0;
+
+    return (jboolean)dt->setParam(categoryStr, nameStr, valueStr);
+}
+
+jboolean JNICALL Java_de_dfki_resc28_art4j_DTrackSDK_setParam__Ljava_lang_String_2(JNIEnv *env, jobject obj, jstring parameter)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+
+    const char *parameterStr = env->GetStringUTFChars(parameter, 0);
+    if (!parameterStr)
+        return (jboolean)0;
+
+    return (jboolean)dt->setParam(parameterStr);
+}
+
+jstring Java_de_dfki_resc28_art4j_DTrackSDK_getParam__Ljava_lang_String_2Ljava_lang_String_2(JNIEnv *env, jobject obj, jstring category, jstring name)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+
+    const char *categoryStr = env->GetStringUTFChars(category, 0);
+    if (!categoryStr)
+        return (jboolean)0;
+    const char *nameStr = env->GetStringUTFChars(name, 0);
+    if (!nameStr)
+        return (jboolean)0;
+
+    std::string value;
+    const bool result = dt->getParam(categoryStr, nameStr, value);
+
+    return result ? env->NewStringUTF(value.c_str()) : 0;
+}
+
+jstring Java_de_dfki_resc28_art4j_DTrackSDK_getParam__Ljava_lang_String_2(JNIEnv *env, jobject obj, jstring parameter)
+{
+    DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
+
+    const char *parameterStr = env->GetStringUTFChars(parameter, 0);
+    if (!parameterStr)
+        return 0;
+
+    std::string value;
+    const bool result = dt->getParam(parameterStr, value);
+
+    return result ? env->NewStringUTF(value.c_str()) : 0;
+}
+
 jint Java_de_dfki_resc28_art4j_DTrackSDK_getDataPort(JNIEnv *env, jobject obj)
 {
     DTrackSDK* dt = getHandle<DTrackSDK>(env,obj);
