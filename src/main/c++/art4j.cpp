@@ -106,6 +106,13 @@ jlong JNICALL Java_de_dfki_resc28_art4j_DTrackSDK_DTrackSDK_1destroy(JNIEnv *env
     return handle_to<DTrackSDK>(0);
 }
 
+JNIEXPORT jboolean JNICALL Java_de_dfki_resc28_art4j_DTrackSDK_DTrackSDK_1isDestroyed
+  (JNIEnv *env, jclass cls, jlong handle)
+{
+    const DTrackSDK *dt = handle_cast<DTrackSDK>(handle);
+    return (jboolean)(dt == 0);
+}
+
 jint Java_de_dfki_resc28_art4j_DTrackSDK_DTrackSDK_1getLastDataError(JNIEnv *env, jclass cls, jlong handle)
 {
     const DTrackSDK* dt = handle_cast<DTrackSDK>(handle);

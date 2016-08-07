@@ -48,6 +48,7 @@ public class DTrackSDK {
         }
     }
 
+    @Deprecated
     public static synchronized DTrackSDK getInstance() {
         if (inst == null) {
             inst = new DTrackSDK();
@@ -56,6 +57,7 @@ public class DTrackSDK {
         return inst;
     }
 
+    @Deprecated
     public static synchronized DTrackSDK getInstance(String serverHost, int serverPort, int dataPort) {
         if (inst == null) {
             inst = new DTrackSDK(serverHost, serverPort, dataPort);
@@ -64,9 +66,26 @@ public class DTrackSDK {
         return inst;
     }
 
+    public DTrackSDK() {
+        nativeHandle = DTrackSDK_create(5000);
+    }
+
+    public DTrackSDK(int dataPort) {
+        nativeHandle = DTrackSDK_create(dataPort);
+    }
+
+    public DTrackSDK(String serverHost, int serverPort, int dataPort) {
+        nativeHandle = DTrackSDK_create(serverHost, serverPort, dataPort);
+    }
+
     //================================================================================
     // Public Methods
     //================================================================================
+
+    public synchronized final boolean isDestroyed() {
+        return DTrackSDK_isDestroyed(nativeHandle);
+    }
+
     public synchronized final int getLastDataError() {
         return DTrackSDK_getLastDataError(nativeHandle);
     }
@@ -264,16 +283,16 @@ public class DTrackSDK {
 //
 //	getNumMeaTool()
 //	getMeaTool( )
-//		
+//
 //	getNumMeaRef()
 //	getMeaRef( )
-//	
+//
 //	getNumHand()
 //	getHand( )
-//	
+//
 //	getNumHuman()
 //	getHuman( )
-//	
+//
 //	getNumInertial()
 //	getInertial( )
     /**
@@ -334,23 +353,14 @@ public class DTrackSDK {
     //================================================================================
     // Private Methods
     //================================================================================
-    public DTrackSDK() {
-        nativeHandle = DTrackSDK_create(5000);
-    }
-
-    public DTrackSDK(int dataPort) {
-        nativeHandle = DTrackSDK_create(dataPort);
-    }
-
-    public DTrackSDK(String serverHost, int serverPort, int dataPort) {
-        nativeHandle = DTrackSDK_create(serverHost, serverPort, dataPort);
-    }
 
     private static native long DTrackSDK_create(int dataPort);
 
     private static native long DTrackSDK_create(String serverHost, int serverPort, int dataPort);
 
     private static native long DTrackSDK_destroy(long handle);
+
+    private static native boolean DTrackSDK_isDestroyed(long handle);
 
     private static native int DTrackSDK_getLastDataError(long handle);
 
@@ -406,6 +416,8 @@ public class DTrackSDK {
     // Private Members
     //================================================================================
     private long nativeHandle;
+
+    @Deprecated
     private static DTrackSDK inst;
 
     static {
