@@ -41,8 +41,26 @@ public class DTrackTest {
         //DTrackSDK tracker = DTrackSDK.getInstance("192.168.81.110", 50105, 5002);
         //DTrackSDK tracker = DTrackSDK.getInstance(null, 50105, 5002);
 
-        //DTrackSDK tracker = new DTrackSDK("192.168.81.110", 50105, 5002);
-        DTrackSDK tracker = new DTrackSDK("localhost", 50105, 5002);
+        DTrackSDK tracker = new DTrackSDK("192.168.81.110", 50105, 5002);
+        //DTrackSDK tracker = new DTrackSDK("localhost", 50105, 5002);
+
+        if (!tracker.isSystemAccessible()) {
+            System.err.println("WARNING: Controller is already in use !");
+        }
+
+        checkParam(tracker, "system", "version");
+        checkParam(tracker, "system", "hostname");
+        checkParam(tracker, "system", "controller_serial");
+        checkParam(tracker, "system", "protocol_version");
+        checkParam(tracker, "system", "access");
+        checkParam(tracker, "system", "ethernet_mac");
+
+        int inactiveChannel = 0;
+        do {
+            inactiveChannel = tracker.findInactiveChannel(inactiveChannel+1, DTrackSDK.NUM_DTRACK2_OUTPUT_CHANNELS);
+            if (inactiveChannel > 0)
+                System.out.format("Inactive channel: %d%n", inactiveChannel);
+        } while (inactiveChannel > 0);
 
         // Initialize
         //System.out.println(Inet4Address.getLocalHost().getHostAddress());
@@ -71,7 +89,6 @@ public class DTrackTest {
         System.out.format("Last DTrack Error : %s%n", DTrackSDK.errorToString(tracker.getLastDTrackError()));
         System.out.format("Last DTrack Error Description: %s%n", tracker.getLastDTrackErrorDescription());
 
-        System.out.println("Start Measurement");
 
         checkParam(tracker, "status", "active");
         checkParam(tracker, "status", "frames_lost");
@@ -139,17 +156,13 @@ public class DTrackTest {
 
         System.out.format("Available channels: %d%n", currentChannel-1);
 
-        int inactiveChannel = 0;
-        do {
-            inactiveChannel = tracker.findInactiveChannel(inactiveChannel+1, 5);
-            if (inactiveChannel > 0)
-                System.out.format("Inactive channel: %d%n", inactiveChannel);
-        } while (inactiveChannel > 0);
 
 
 //        sendCommand(tracker, "dtrack2 get status active");
 //        sendCommand(tracker, "dtrack2 set output net ch04 udp 192.168.81.107 5001");
 //        sendCommand(tracker, "dtrack2 set output active ch04 all yes");
+
+        System.out.println("Start Measurement");
 
         tracker.startMeasurement();
         for (int i = 0; i < 5; i++) {
