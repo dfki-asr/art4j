@@ -11,6 +11,8 @@ import de.dfki.resc28.art4j.nar.NarSystem;
 
 public class DTrackSDK {
 
+    public static final int NUM_DTRACK2_OUTPUT_CHANNELS = 5;
+
     public static final int SYS_DTRACK_UNKNOWN = 0; // unknown system
     public static final int SYS_DTRACK = 1; // DTrack system
     public static final int SYS_DTRACK_2 = 2; // DTrack2 system
@@ -328,6 +330,27 @@ public class DTrackSDK {
             }
             currentChannel += 1;
         }
+    }
+
+    public boolean isSystemAccessible() {
+        final String result = getParam("system", "access");
+        return "full".equals(result);
+    }
+
+    public String getSystemHostname() {
+        return getParam("system", "hostname");
+    }
+
+    public String getSystemVersion() {
+        return getParam("system", "version");
+    }
+
+    public String getSystemAccess() {
+        return getParam("system", "access");
+    }
+
+    public String getSystemControllerSerial() {
+        return getParam("system", "controller_serial");
     }
 
     public boolean configureUDPChannel(int channel, String host, int port) {
