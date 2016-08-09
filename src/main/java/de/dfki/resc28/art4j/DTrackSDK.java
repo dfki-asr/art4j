@@ -310,14 +310,17 @@ public class DTrackSDK {
      * Find first inactive channel starting with startChannel.
      *
      * @param startChannel
+     * @param numChannels
      * @return positive inactive channel number, 0 if no channel found and -1 on
      * error.
      */
     public int findInactiveChannel(final int startChannel, final int numChannels) {
+        if (startChannel <= 0)
+            throw new IllegalArgumentException("startChannel must be greater than 0");
         int currentChannel = startChannel;
         boolean channelFound = false;
         while (true) {
-            if (numChannels > 0 && startChannel >= numChannels) {
+            if (numChannels > 0 && currentChannel > numChannels) {
                 return 0;
             }
             String chName = String.format("ch%02d", currentChannel);
