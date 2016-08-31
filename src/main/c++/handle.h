@@ -6,6 +6,7 @@
 
 #ifndef _HANDLE_H_INCLUDED_
 #define _HANDLE_H_INCLUDED_
+#include <jni.h>
 
 inline jfieldID getHandleField(JNIEnv *env, jobject obj)
 {
@@ -19,6 +20,18 @@ T *getHandle(JNIEnv *env, jobject obj)
 {
     jlong handle = env->GetLongField(obj, getHandleField(env, obj));
     return reinterpret_cast<T *>(handle);
+}
+
+template <typename T>
+T *handle_cast(jlong handle)
+{
+    return reinterpret_cast<T *>(handle);
+}
+
+template <typename T>
+jlong handle_to(T *t)
+{
+    return reinterpret_cast<jlong>(t);
 }
 
 template <typename T>
